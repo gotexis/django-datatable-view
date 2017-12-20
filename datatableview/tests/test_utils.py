@@ -20,22 +20,22 @@ class UtilsTests(DatatableViewTestCase):
     def test_resolve_orm_path_local(self):
         """ Verifies that references to a local field on a model are returned. """
         field = utils.resolve_orm_path(models.ExampleModel, 'name')
-        self.assertEqual(field, models.ExampleModel._meta.get_field_by_name('name')[0])
+        self.assertEqual(field, models.ExampleModel._meta.get_field('name'))
 
     def test_resolve_orm_path_fk(self):
         """ Verify that ExampleModel->RelatedModel.name == RelatedModel.name """
         remote_field = utils.resolve_orm_path(models.ExampleModel, 'related__name')
-        self.assertEqual(remote_field, models.RelatedModel._meta.get_field_by_name('name')[0])
+        self.assertEqual(remote_field, models.RelatedModel._meta.get_field('name'))
 
     def test_resolve_orm_path_reverse_fk(self):
         """ Verify that ExampleModel->>>ReverseRelatedModel.name == ReverseRelatedModel.name """
         remote_field = utils.resolve_orm_path(models.ExampleModel, 'reverserelatedmodel__name')
-        self.assertEqual(remote_field, models.ReverseRelatedModel._meta.get_field_by_name('name')[0])
+        self.assertEqual(remote_field, models.ReverseRelatedModel._meta.get_field('name'))
 
     def test_resolve_orm_path_m2m(self):
         """ Verify that ExampleModel->>>RelatedM2MModel.name == RelatedM2MModel.name """
         remote_field = utils.resolve_orm_path(models.ExampleModel, 'relateds__name')
-        self.assertEqual(remote_field, models.RelatedM2MModel._meta.get_field_by_name('name')[0])
+        self.assertEqual(remote_field, models.RelatedM2MModel._meta.get_field('name'))
 
     def test_split_real_fields(self):
         """ Verifies that the first non-real field causes a break in the field list. """
@@ -160,7 +160,7 @@ class UtilsTests(DatatableViewTestCase):
 
         self.assertEqual(column_info[0].pretty_name, "Primary Key")
 
-        name_field = models.ExampleModel._meta.get_field_by_name('name')[0]
+        name_field = models.ExampleModel._meta.get_field('name')
         self.assertEqual(column_info[1].pretty_name, name_field.name)
 
     def test_structure_is_iterable(self):

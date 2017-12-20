@@ -1,11 +1,12 @@
 # -*- encoding: utf-8 -*-
+from distutils.version import StrictVersion
 
 from django import template
 from django import get_version
 
 register = template.Library()
 
-if get_version().split('.') < ['1', '5']:
+if StrictVersion(get_version()) < StrictVersion('1.5'):
     from django.template.defaulttags import url
     from django.core.urlresolvers import reverse
 

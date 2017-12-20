@@ -1,17 +1,16 @@
 # -*- encoding: utf-8 -*-
 
 import json
+from distutils.version import StrictVersion
 
+import six
 from django import get_version
 from django.core.urlresolvers import reverse
 
-import six
-
+from .example_project.example_project.example_app import models, views
 from .testcase import DatatableViewTestCase
-from .example_project.example_project.example_app import views
-from .example_project.example_project.example_app import models
 
-if get_version().split('.') < ['1', '7']:
+if StrictVersion(get_version()) < StrictVersion('1.7'):
     initial_data_fixture = 'initial_data_legacy.json'
 else:
     initial_data_fixture = 'initial_data_modern.json'

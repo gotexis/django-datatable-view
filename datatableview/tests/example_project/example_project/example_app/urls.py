@@ -2,7 +2,7 @@
 
 import re
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from . import views
 
@@ -18,7 +18,7 @@ for attr in dir(views):
         name = name.replace("-datatable-view", "")
         urls.append(url(r'^{name}/$'.format(name=name), View.as_view(), name=name))
 
-urlpatterns = patterns('',
+urlpatterns = (
     url(r'^$', views.IndexView.as_view(), name="index"),
     url(r'^reset/$', views.ResetView.as_view()),
     url(r'^column-formats/$', views.ValidColumnFormatsView.as_view(), name="column-formats"),

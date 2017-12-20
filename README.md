@@ -2,18 +2,20 @@
 
 This package is used in conjunction with the jQuery plugin [DataTables](http://datatables.net/), and supports state-saving detection with [fnSetFilteringDelay](http://datatables.net/plug-ins/api).  The package consists of a class-based view, and a small collection of utilities for rendering table data from models.
 
-[![PyPI Downloads][pypi-dl-image]][pypi-dl-link]
-[![PyPI Version][pypi-v-image]][pypi-v-link]
-
-[pypi-dl-link]: https://pypi.python.org/pypi/django-datatable-view
-[pypi-dl-image]: https://img.shields.io/pypi/dm/django-datatable-view.png
-[pypi-v-link]: https://pypi.python.org/pypi/django-datatable-view
-[pypi-v-image]: https://img.shields.io/pypi/v/django-datatable-view.png
-
 Dependencies:
 
 * [dateutil](http://labix.org/python-dateutil) library for flexible, fault-tolerant date parsing.
-* [Django](http://www.djangoproject.com/) >= 1.2
+* [Django](http://www.djangoproject.com/) >= 1.10
+
+# Update Note
+This is a fork of the [0.8.3](https://github.com/pivotal-energy-solutions/django-datatable-view/tree/django-datatable-view-0.8.3) release
+that has been updated to be compatible with Django >= 1.10. Django >= 1.10 deprecates a number of calls related to `model._meta` documented 
+[here](https://docs.djangoproject.com/en/1.11/ref/models/meta/#migrating-from-the-old-api). The changes in these fork follow the 
+guidelines for migrating from the old `model._meta` API.
+
+This fork is useful if you would like to use django-datatable-view without jumping to the 0.9/1.0 release which has a number of changes
+in the structure of `datatableview`. If you are starting out a new project, you are better off working with the 
+[latest official release](https://github.com/pivotal-energy-solutions/django-datatable-view). 
 
 
 # Features at a glance

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
-urlpatterns = patterns('',
+urlpatterns = (
     url(r'^', include('example_project.example_app.urls')),
 )

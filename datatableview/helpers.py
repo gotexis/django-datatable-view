@@ -9,7 +9,7 @@ functions allows for generic ``*args`` to pass through to the function, even tho
 in any way.
 
 """
-
+from distutils.version import StrictVersion
 from functools import partial, wraps
 
 from django import get_version
@@ -22,7 +22,7 @@ import six
 
 from .utils import resolve_orm_path, XEDITABLE_FIELD_TYPES
 
-if get_version().split('.') >= ['1', '5']:
+if StrictVersion(get_version()) >= StrictVersion('1.5'):
     from django.utils.timezone import localtime
 else:
     localtime = None

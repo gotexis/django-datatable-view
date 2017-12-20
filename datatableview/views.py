@@ -2,10 +2,11 @@
 
 import datetime
 import json
-from django.utils.encoding import force_text
-import re
-import operator
 import logging
+import operator
+import re
+from distutils.version import StrictVersion
+
 try:
     from functools import reduce
 except ImportError:
@@ -32,7 +33,8 @@ from .utils import (FIELD_TYPES, ObjectListResult, DatatableOptions, DatatableSt
 log = logging.getLogger(__name__)
 
 
-CAN_UPDATE_FIELDS = get_version().split('.') >= ['1', '5']
+CAN_UPDATE_FIELDS = StrictVersion(get_version()) >= StrictVersion('1.5')
+
 
 class DatatableMixin(MultipleObjectMixin):
     """
@@ -155,7 +157,7 @@ class DatatableMixin(MultipleObjectMixin):
                         field = resolve_orm_path(self.get_model(), component_name)
                         if field.choices:
                             # Query the database for the database value rather than display value
-                            choices = field.get_flatchoices()
+                            choices = field.flatchoices
                             length = len(choices)
                             database_values = []
                             display_values = []
@@ -584,7 +586,7 @@ class XEditableMixin(object):
         else:
             return HttpResponseBadRequest()
 
-        field = self.get_model()._meta.get_field_by_name(field_name)[0]
+        field = self.get_model()._meta.get_field(field_name)
 
         choices = self.get_field_choices(field, field_name)
         return HttpResponse(json.dumps(choices))

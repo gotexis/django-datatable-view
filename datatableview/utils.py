@@ -119,7 +119,7 @@ def resolve_orm_path(model, orm_path):
 
     bits = orm_path.split('__')
     endpoint_model = reduce(get_model_at_related_field, [model] + bits[:-1])
-    field, _, _, _ = endpoint_model._meta.get_field_by_name(bits[-1])
+    field = endpoint_model._meta.get_field(bits[-1])
     return field
 
 
@@ -131,7 +131,8 @@ def get_model_at_related_field(model, attr):
     """
 
     try:
-        field, _, direct, m2m = model._meta.get_field_by_name(attr)
+        field = model._meta.get_field(attr)
+        direct = not field.auto_created or field.concrete
     except FieldDoesNotExist:
         raise
 
@@ -145,9 +146,6 @@ def get_model_at_related_field(model, attr):
 
     if hasattr(field, 'rel') and field.rel:  # Forward/m2m relationship
         return field.rel.to
-
-    if hasattr(field, 'field'):  # Forward GenericForeignKey in Django 1.6+
-        return field.field.rel.to
 
     raise ValueError("{0}.{1} ({2}) is not a relationship field.".format(model.__name__, attr,
             field.__class__.__name__))
@@ -237,7 +235,7 @@ class DatatableStructure(object):
 
         column_info = []
         if self.model:
-            model_fields = self.model._meta.get_all_field_names()
+            model_fields = [f.name for f in self.model._meta.get_fields()]
         else:
             model_fields = []
 
@@ -247,7 +245,7 @@ class DatatableStructure(object):
             if column.fields and column.fields[0] in model_fields:
                 ordering_name = column.fields[0]
                 if not pretty_name:
-                    field = self.model._meta.get_field_by_name(column.fields[0])[0]
+                    field = self.model._meta.get_field(column.fields[0])
                     pretty_name = field.verbose_name
             else:
                 ordering_name = pretty_name
@@ -361,7 +359,7 @@ class DatatableOptions(UserDict):
                     is_local_field = False
                     if column.fields:
                         base_field_name = column.fields[0].split('__')[0]
-                        if base_field_name in self._model._meta.get_all_field_names():
+                        if base_field_name in [f.name for f in self._model._meta.get_fields()]:
                             is_local_field = True
 
                     if not column.fields or len(column.fields) > 1 or not is_local_field:
@@ -459,7 +457,7 @@ def filter_real_fields(model, fields, key=None):
     field_hints = tuple(zip(map(key, fields), fields))
     field_map = dict(field_hints)
     field_list = set(field_map.keys())
-    concrete_names = set(model._meta.get_all_field_names())
+    concrete_names = set([f.name for f in model._meta.get_fields()])
 
     # Do some math with sets
     concrete_fields = concrete_names.intersection(field_list)
