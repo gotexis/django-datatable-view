@@ -9,7 +9,6 @@ from distutils.version import StrictVersion
 from functools import reduce
 
 import dateutil.parser
-import six
 from django import get_version
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -403,7 +402,7 @@ class DatatableMixin(MultipleObjectMixin):
         }
         for i, name in enumerate(options['columns']):
             column_data = self.get_column_data(i, name, obj)[0]
-            data[str(i)] = six.text_type(column_data)
+            data[str(i)] = str(column_data)
         return data
 
     def get_column_data(self, i, name, instance):
@@ -422,7 +421,7 @@ class DatatableMixin(MultipleObjectMixin):
         else:
             values = f(instance, column)
         if not isinstance(values, (tuple, list)):
-            values = (values, re.sub(r'<[^>]+>', '', six.text_type(values)))
+            values = (values, re.sub(r'<[^>]+>', '', str(values)))
         return values
 
     def preload_record_data(self, instance):
@@ -529,7 +528,7 @@ class DatatableMixin(MultipleObjectMixin):
             value = reduce(chain_lookup, [instance] + field_name.split('__'))
 
             if isinstance(value, Model):
-                value = six.text_type(value)
+                value = str(value)
 
             if value is not None:
                 values.append(value)
@@ -537,7 +536,7 @@ class DatatableMixin(MultipleObjectMixin):
         if len(values) == 1:
             value = values[0]
         else:
-            value = u' '.join(map(six.text_type, values))
+            value = u' '.join(map(str, values))
 
         return value, value
 

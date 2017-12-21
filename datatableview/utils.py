@@ -3,7 +3,6 @@
 from collections import UserDict, defaultdict, namedtuple
 from functools import reduce
 
-import six
 from django.conf import settings
 from django.db import models
 from django.db.models.fields import FieldDoesNotExist
@@ -238,7 +237,7 @@ class DatatableStructure(object):
         }
 
         if name in self.ordering:
-            attributes['data-sorting'] = ','.join(map(six.text_type, self.ordering[name]))
+            attributes['data-sorting'] = ','.join(map(str, self.ordering[name]))
 
         return attributes
 
@@ -252,7 +251,7 @@ class DatatableOptions(UserDict):
         # Core options, not modifiable by client updates
         if 'columns' not in kwargs:
             model_fields = model._meta.local_fields
-            kwargs['columns'] = list(map(lambda f: (six.text_type(f.verbose_name), f.name), model_fields))
+            kwargs['columns'] = list(map(lambda f: (str(f.verbose_name), f.name), model_fields))
 
         if 'hidden_columns' not in kwargs or kwargs['hidden_columns'] is None:
             kwargs['hidden_columns'] = []

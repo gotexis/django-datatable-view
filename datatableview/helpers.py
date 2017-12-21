@@ -11,7 +11,6 @@ in any way.
 """
 from functools import partial, wraps
 
-import six
 from django.forms.utils import flatatt
 from django.utils.timezone import localtime
 
@@ -78,7 +77,7 @@ def link_to_model(instance, text=None, *args, **kwargs):
 
     """
     if not text:
-        text = kwargs.get('default_value') or six.text_type(instance)
+        text = kwargs.get('default_value') or str(instance)
     return """<a href="{0}">{1}</a>""".format(instance.get_absolute_url(), text)
 
 
@@ -113,7 +112,7 @@ def itemgetter(k, ellipsis=False, key=None):
         if default_value is None:
             default_value = instance
         value = default_value[k]
-        if ellipsis and isinstance(k, slice) and isinstance(value, six.string_types) and \
+        if ellipsis and isinstance(k, slice) and isinstance(value, str) and \
                 len(default_value) > len(value):
             if ellipsis is True:
                 value += "..."
