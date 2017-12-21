@@ -1,27 +1,17 @@
 # -*- encoding: utf-8 -*-
 
 from datetime import datetime
-from distutils.version import StrictVersion
 from functools import partial
-
-from django import get_version
-
-from datatableview import helpers
 
 import six
 
-from .testcase import DatatableViewTestCase
+from datatableview import helpers
 from .test_app.models import ExampleModel, RelatedM2MModel
-
-if StrictVersion(get_version()) < StrictVersion('1.7'):
-    test_data_fixture = 'test_data_legacy.json'
-else:
-    test_data_fixture = 'test_data.json'
-
+from .testcase import DatatableViewTestCase
 
 
 class HelpersTests(DatatableViewTestCase):
-    fixtures = [test_data_fixture]
+    fixtures = ['test_data.json']
 
     def test_link_to_model(self):
         """ Verifies that link_to_model works. """

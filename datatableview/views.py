@@ -6,29 +6,23 @@ import logging
 import operator
 import re
 from distutils.version import StrictVersion
+from functools import reduce
 
-try:
-    from functools import reduce
-except ImportError:
-    pass
-
-from django.views.generic.list import ListView, MultipleObjectMixin
-from django.http import HttpResponse, HttpResponseBadRequest
+import dateutil.parser
+import six
+from django import get_version
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Model, Manager, Q
+from django.db.models import Manager, Model, Q
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.utils.encoding import force_text
 from django.utils.text import smart_split
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.conf import settings
-from django import get_version
-
-import six
-import dateutil.parser
+from django.views.generic.list import ListView, MultipleObjectMixin
 
 from .forms import XEditableUpdateForm
-from .utils import (FIELD_TYPES, ObjectListResult, DatatableOptions, DatatableStructure,
-                    split_real_fields, filter_real_fields, resolve_orm_path, get_first_orm_bit,
-                    get_field_definition, MINIMUM_YEAR)
+from .utils import (DatatableOptions, DatatableStructure, FIELD_TYPES, MINIMUM_YEAR, ObjectListResult,
+                    filter_real_fields, get_field_definition, get_first_orm_bit, resolve_orm_path, split_real_fields, )
 
 log = logging.getLogger(__name__)
 
@@ -409,8 +403,6 @@ class DatatableMixin(MultipleObjectMixin):
         }
         for i, name in enumerate(options['columns']):
             column_data = self.get_column_data(i, name, obj)[0]
-            if six.PY2 and isinstance(column_data, str):  # not unicode
-                column_data = column_data.decode('utf-8')
             data[str(i)] = six.text_type(column_data)
         return data
 
@@ -429,15 +421,8 @@ class DatatableMixin(MultipleObjectMixin):
             values = f(instance, *args, **kwargs)
         else:
             values = f(instance, column)
-
         if not isinstance(values, (tuple, list)):
-            if six.PY2:
-                if isinstance(values, str):  # not unicode
-                    values = values.decode('utf-8')
-                else:
-                    values = unicode(values)
             values = (values, re.sub(r'<[^>]+>', '', six.text_type(values)))
-
         return values
 
     def preload_record_data(self, instance):

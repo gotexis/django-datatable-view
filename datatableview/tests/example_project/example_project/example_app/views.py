@@ -6,7 +6,7 @@ import re
 
 import django
 from django.views.generic import View, TemplateView
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.template.defaultfilters import timesince
 
 import datatableview
@@ -19,6 +19,7 @@ from datatableview.tests.example_project.example_project.example_app.models impo
 
 class ResetView(View):
     """ Google App Engine view for reloading the database to a fresh state every 24 hours. """
+
     def get(self, request, *args, **kwargs):
         from django.core.management import call_command
         from django.http import HttpResponse
@@ -86,12 +87,12 @@ class DemoMixin(object):
             line = line[4:].rstrip()
             if not line:
                 if alert:
-                    p.append(u"""</div>""")
+                    p.append("""</div>""")
                     alert = False
                 paragraphs.append(p)
                 p = []
             elif line.lower()[:-1] in alert_types:
-                p.append(u"""<div class="alert alert-{type}">""".format(type=line.lower()[:-1]))
+                p.append("""<div class="alert alert-{type}">""".format(type=line.lower()[:-1]))
                 alert = True
             else:
                 p.append(line)
@@ -119,7 +120,7 @@ class ZeroConfigurationDatatableView(DemoMixin, DatatableView):
 
     model = Entry
 
-    implementation = u"""
+    implementation = """
     class ZeroConfigurationDatatableView(DatatableView):
         model = Entry
     """
@@ -143,7 +144,7 @@ class SpecificColumnsDatatableView(DemoMixin, DatatableView):
         ]
     }
 
-    implementation = u"""
+    implementation = """
     class SpecificColumnsDatatableView(DatatableView):
         model = Entry
         datatable_options = {
@@ -177,7 +178,7 @@ class PrettyNamesDatatableView(DemoMixin, DatatableView):
         ]
     }
 
-    implementation = u"""
+    implementation = """
     class PrettyNamesDatatableView(DatatableView):
         model = Entry
         datatable_options = {
@@ -217,7 +218,7 @@ class PresentationalChangesDatatableView(DemoMixin, DatatableView):
     def get_entry_age(self, instance, *args, **kwargs):
         return timesince(instance.pub_date)
 
-    implementation = u"""
+    implementation = """
     from django.template.defaultfilters import timesince
     class PresentationalChangesDatatableView(DatatableView):
         model = Entry
@@ -262,7 +263,7 @@ class VirtualColumnDefinitionsDatatableView(DemoMixin, DatatableView):
     def get_entry_age(self, instance, *args, **kwargs):
         return timesince(instance.pub_date)
 
-    implementation = u"""
+    implementation = """
     from django.template.defaultfilters import timesince
     class VirtualColumnDefinitionsDatatableView(DatatableView):
         model = Entry
@@ -345,7 +346,7 @@ class CompoundColumnsDatatableView(DemoMixin, DatatableView):
     def get_headline_data(self, instance, *args, **kwargs):
         return "%s (%s)" % (instance.headline, instance.blog.name)
 
-    implementation = u"""
+    implementation = """
         class CompoundColumnDatatableView(DatatableView):
             model = Entry
             datatable_options = {
@@ -385,7 +386,7 @@ class RelatedFieldsDatatableView(DemoMixin, DatatableView):
         ],
     }
 
-    implementation = u"""
+    implementation = """
     class RelatedFieldsDatatableView(DatatableView):
         model = Entry
         datatable_options = {
@@ -426,7 +427,7 @@ class ManyToManyFieldsDatatableView(DemoMixin, DatatableView):
     def get_author_names_as_links(self, instance, *args, **kwargs):
         return ", ".join([helpers.link_to_model(author) for author in instance.authors.all()])
 
-    implementation = u"""
+    implementation = """
     class ManyToManyFields(DatatableView):
         model = Entry
         datatable_options = {
@@ -486,7 +487,7 @@ class DefaultCallbackNamesDatatableView(DemoMixin, DatatableView):
     def get_column_Publication_Date_data(self, instance, *args, **kwargs):
         return instance.pub_date.strftime("%m/%d/%Y")
 
-    implementation = u"""
+    implementation = """
     class DefaultCallbackNamesDatatableView(DatatableView):
         model = Entry
         datatable_options = {
@@ -542,7 +543,7 @@ class XEditableColumnsDatatableView(DemoMixin, XEditableDatatableView):
         ]
     }
 
-    implementation = u"""
+    implementation = """
     class XEditableColumnsDatatableView(XEditableDatatableView):
         model = Entry
         datatable_options = {
@@ -589,7 +590,7 @@ class HelpersReferenceDatatableView(DemoMixin, XEditableDatatableView):
         ],
     }
 
-    implementation = u"""
+    implementation = """
     class HelpersReferenceDatatableView(XEditableDatatableView):
         model = Entry
         datatable_options = {
@@ -632,7 +633,7 @@ class PerRequestOptionsDatatableView(DemoMixin, DatatableView):
         options['columns'].append("blog")
         return options
 
-    implementation = u"""
+    implementation = """
     class PerRequestOptionsDatatableView(DemoMixin, DatatableView):
         model = Entry
         datatable_options = {
@@ -668,7 +669,7 @@ class OrderingDatatableView(DemoMixin, DatatableView):
         'ordering': ['-id'],
     }
 
-    implementation = u"""
+    implementation = """
     class OrderingDatatableView(DatatableView):
         model = Entry
         datatable_options = {
@@ -703,7 +704,7 @@ class UnsortableColumnsDatatableView(DemoMixin, DatatableView):
         'unsortable_columns': ['headline', 'blog', 'pub_date'],
     }
 
-    implementation = u"""
+    implementation = """
     class UnsortableColumnsDatatableView(DatatableView):
         model = Entry
         datatable_options = {
@@ -738,7 +739,7 @@ class HiddenColumnsDatatableView(DemoMixin, DatatableView):
         'hidden_columns': ['id'],
     }
 
-    implementation = u"""
+    implementation = """
     class HiddenColumnsDatatableView(DatatableView):
         model = Entry
         datatable_options = {
@@ -774,7 +775,7 @@ class SearchFieldsDatatableView(DemoMixin, DatatableView):
         'search_fields': ['blog__name'],
     }
 
-    implementation = u"""
+    implementation = """
     class SearchFieldsDatatableView(DatatableView):
         model = Entry
         datatable_options = {
@@ -816,7 +817,7 @@ class CustomizedTemplateDatatableView(DemoMixin, DatatableView):
         ],
     }
 
-    implementation = u"""
+    implementation = """
     class CustomizedTemplateDatatableView(DatatableView):
         model = Entry
         datatable_options = {
@@ -873,7 +874,7 @@ class BootstrapTemplateDatatableView(DemoMixin, DatatableView):
         ],
     }
 
-    implementation = u"""
+    implementation = """
     class BootstrapTemplateOfficialDatatableView(DatatableView):
         model = Entry
         datatable_options = {
@@ -904,7 +905,7 @@ class CSSStylingDatatableView(DemoMixin, DatatableView):
         ],
     }
 
-    implementation = u"""
+    implementation = """
     class CSSStylingDatatableView(DatatableView):
         model = Entry
         datatable_options = {
@@ -1029,7 +1030,6 @@ class MultipleTablesDatatableView(DemoMixin, DatatableView):
             return super(MultipleTablesDatatableView, self).get_datatable()
 
         return datatable
-
 
     def get_context_data(self, **kwargs):
         context = super(MultipleTablesDatatableView, self).get_context_data(**kwargs)

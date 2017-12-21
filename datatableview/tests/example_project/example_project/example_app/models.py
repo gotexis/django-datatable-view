@@ -7,7 +7,7 @@ class Blog(models.Model):
     name = models.CharField(max_length=100)
     tagline = models.TextField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -18,7 +18,7 @@ class Author(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -36,7 +36,7 @@ class Entry(models.Model):
         (5, 'Excellent'),
     )
 
-    blog = models.ForeignKey(Blog)
+    blog = models.ForeignKey(Blog, models.CASCADE)
     headline = models.CharField(max_length=255)
     body_text = models.TextField()
     pub_date = models.DateField()
@@ -46,7 +46,7 @@ class Entry(models.Model):
     n_pingbacks = models.IntegerField()
     rating = models.IntegerField(choices=_rating_choices)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.headline
 
     def get_absolute_url(self):

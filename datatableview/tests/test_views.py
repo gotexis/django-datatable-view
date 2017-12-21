@@ -1,31 +1,21 @@
 # -*- encoding: utf-8 -*-
 
 import json
-from distutils.version import StrictVersion
 
-import six
-from django import get_version
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from .example_project.example_project.example_app import models, views
 from .testcase import DatatableViewTestCase
-
-if StrictVersion(get_version()) < StrictVersion('1.7'):
-    initial_data_fixture = 'initial_data_legacy.json'
-else:
-    initial_data_fixture = 'initial_data_modern.json'
 
 
 class ViewsTests(DatatableViewTestCase):
     urls = 'datatableview.tests.example_project.example_project.example_app.urls'
 
-    fixtures = [initial_data_fixture]
+    fixtures = ['initial_data.json']
 
     def get_json_response(self, url):
         response = self.client.get(url, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        content = response.content
-        if six.PY3:
-            content = content.decode()
+        content = response.content.decode()
         return json.loads(content)
 
     def test_zero_configuration_datatable_view(self):

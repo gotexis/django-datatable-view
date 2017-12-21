@@ -1,30 +1,14 @@
 # -*- encoding: utf-8 -*-
 
-from collections import defaultdict, namedtuple
-try:
-    from functools import reduce
-except ImportError:
-    pass
-try:
-    from collections import UserDict
-except ImportError:
-    from UserDict import UserDict
-
-from django.db import models
-from django.db.models.fields import FieldDoesNotExist
-from django.template.loader import render_to_string
-from django.conf import settings
-try:
-    from django.forms.utils import flatatt
-except ImportError:
-    from django.forms.util import flatatt
-
-try:
-    from django.utils.encoding import python_2_unicode_compatible
-except ImportError:
-    from .compat import python_2_unicode_compatible
+from collections import UserDict, defaultdict, namedtuple
+from functools import reduce
 
 import six
+from django.conf import settings
+from django.db import models
+from django.db.models.fields import FieldDoesNotExist
+from django.forms.utils import flatatt
+from django.template.loader import render_to_string
 
 # Sane boundary constants
 MINIMUM_PAGE_LENGTH = 5
@@ -132,20 +116,13 @@ def get_model_at_related_field(model, attr):
 
     try:
         field = model._meta.get_field(attr)
-        direct = not field.auto_created or field.concrete
     except FieldDoesNotExist:
         raise
 
-    if not direct:
-        if hasattr(field, 'related_model'):  # Reverse relationship
-            # -- Django >=1.8 mode
-            return field.related_model
-        elif hasattr(field, "model"):
-            # -- Django <1.8 mode
-            return field.model
-
-    if hasattr(field, 'rel') and field.rel:  # Forward/m2m relationship
-        return field.rel.to
+    if hasattr(field, 'related_model'):
+        return field.related_model
+    elif hasattr(field, 'remote_field') and field.remote_field.field: # Forward/m2m relationship
+        return field.remote_field.field
 
     raise ValueError("{0}.{1} ({2}) is not a relationship field.".format(model.__name__, attr,
             field.__class__.__name__))
@@ -184,7 +161,6 @@ def get_field_definition(field_definition):
     return FieldDefinitionTuple(*field)
 
 
-@python_2_unicode_compatible
 class DatatableStructure(object):
     """
     A class designed to be echoed directly to into template HTML to represent a skeleton table
@@ -472,4 +448,3 @@ def filter_real_fields(model, fields, key=None):
         else:
             virtual_fields.append(field)
     return db_fields, virtual_fields
-

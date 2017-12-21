@@ -9,23 +9,13 @@ functions allows for generic ``*args`` to pass through to the function, even tho
 in any way.
 
 """
-from distutils.version import StrictVersion
 from functools import partial, wraps
 
-from django import get_version
-try:
-    from django.forms.utils import flatatt
-except ImportError:
-    from django.forms.util import flatatt
-
 import six
+from django.forms.utils import flatatt
+from django.utils.timezone import localtime
 
-from .utils import resolve_orm_path, XEDITABLE_FIELD_TYPES
-
-if StrictVersion(get_version()) >= StrictVersion('1.5'):
-    from django.utils.timezone import localtime
-else:
-    localtime = None
+from .utils import XEDITABLE_FIELD_TYPES, resolve_orm_path
 
 
 def keyed_helper(helper):
@@ -89,7 +79,7 @@ def link_to_model(instance, text=None, *args, **kwargs):
     """
     if not text:
         text = kwargs.get('default_value') or six.text_type(instance)
-    return u"""<a href="{0}">{1}</a>""".format(instance.get_absolute_url(), text)
+    return """<a href="{0}">{1}</a>""".format(instance.get_absolute_url(), text)
 
 
 @keyed_helper
@@ -100,7 +90,7 @@ def field_display(instance, *args, **kwargs):
     field_name = kwargs.get('field_data')[1]
     field_display_method_name = 'get_' + field_name + '_display'
     method = getattr(instance, field_display_method_name)
-    return u"{}".format(method())
+    return "{}".format(method())
 
 
 @keyed_helper
@@ -270,7 +260,7 @@ def make_xeditable(instance=None, extra_attrs=[], *args, **kwargs):
         # Choice fields will want to display their readable label instead of db data
         data = getattr(instance, 'get_{0}_display'.format(field_name), lambda: data)()
 
-    data = u"""<a href="#"{attrs}>{data}</a>""".format(attrs=flatatt(attrs), data=data)
+    data = """<a href="#"{attrs}>{data}</a>""".format(attrs=flatatt(attrs), data=data)
     return data
 
 
