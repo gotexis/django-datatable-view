@@ -1,6 +1,5 @@
 #django-datatable-view change log
 
-These logs are also available on GitHub: https://github.com/pivotal-energy-solutions/django-datatable-view/releases
 
 ## 0.8.3
 #### Important future note
@@ -12,6 +11,8 @@ This is the last planned release for the 0.8 series!  0.9 and 1.0 will arrive si
 Added an optional setting named ``DATATABLEVIEW_MINIMUM_DATE`` to try and combat an issue with some databases not liking ``datetime.MINYEAR`` as a valid number for the year of a date column.
 
 Added a fix for some versions of Django misunderstanding a GenericForeignKey when inspecting object relationships for column data.
+
+Added support of Django 2.0. Dropped support of older versions of Django.
 
 
 ## 0.8.2
@@ -176,11 +177,11 @@ The goal of this example project is to replace the incredibly long-winded README
 The new example project is included as part of the ``datatableview.tests`` module.  The easiest way to get it running on your own machine is to do something like this:
 
 ```bash
-$ git clone https://github.com/pivotal-energy-solutions/django-datatable-view.git
+$ git clone https://github.com/utapyngo/django-datatable-view.git
 $ cd django-datatable-view
 $ mkvirtualenv datatableview
 (datatableview)$ pip install -r requirements.txt
-(datatableview)$ datatableview/tests/example_project/manage.py syncdb
+(datatableview)$ datatableview/tests/example_project/manage.py migrate
 (datatableview)$ datatableview/tests/example_project/manage.py runserver
 ```
 

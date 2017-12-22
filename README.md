@@ -5,13 +5,11 @@ This package is used in conjunction with the jQuery plugin [DataTables](http://d
 Dependencies:
 
 * [dateutil](http://labix.org/python-dateutil) library for flexible, fault-tolerant date parsing.
-* [Django](http://www.djangoproject.com/) >= 1.10
+* [Django](http://www.djangoproject.com/) >= 2.0
 
 # Update Note
 This is a fork of the [0.8.3](https://github.com/pivotal-energy-solutions/django-datatable-view/tree/django-datatable-view-0.8.3) release
-that has been updated to be compatible with Django >= 1.10. Django >= 1.10 deprecates a number of calls related to `model._meta` documented 
-[here](https://docs.djangoproject.com/en/1.11/ref/models/meta/#migrating-from-the-old-api). The changes in these fork follow the 
-guidelines for migrating from the old `model._meta` API.
+that has been updated to be compatible with Django >= 2.0.
 
 This fork is useful if you would like to use django-datatable-view without jumping to the 0.9/1.0 release which has a number of changes
 in the structure of `datatableview`. If you are starting out a new project, you are better off working with the 
@@ -49,11 +47,11 @@ There is an example project wrapped up inside of the ``tests`` component of the 
 can be executed using the following basic setup:
 
 ```bash
-$ git clone https://github.com/pivotal-energy-solutions/django-datatable-view.git
+$ git clone https://github.com/utapyngo/django-datatable-view.git
 $ cd django-datatable-view
 $ mkvirtualenv datatableview
 (datatableview)$ pip install -r requirements.txt
-(datatableview)$ datatableview/tests/example_project/manage.py syncdb
+(datatableview)$ datatableview/tests/example_project/manage.py migrate
 (datatableview)$ datatableview/tests/example_project/manage.py runserver
 ```
 
@@ -68,6 +66,11 @@ http://django-datatable-view.appspot.com/
 * Tim Valenta
 * Steven Klass
 
+## Contributors
+
+* azreda
+* utapyngo
+* Alexandr Artemyev
 
 ## Copyright and license
 
