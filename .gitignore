@@ -6,7 +6,7 @@ Thumbs.db
 *.orig
 dist
 build
-django_datatable_view.egg-info
+*.egg-info
 .tm_properties
 db.sqlite3
 appengine
