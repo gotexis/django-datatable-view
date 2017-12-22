@@ -9,18 +9,20 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-## Custom block for getting datatableview on the example_project path
-import sys, os.path
+# Custom block for getting datatableview on the example_project path
+import os.path
+import sys
+
 sys.path.insert(0, '.')  # Main repo directory
 try:
     import datatableview
 except ImportError:
     # Maybe we're running ./manage.py from its local directory
     sys.path[0] = os.path.abspath('../../../')
-##
+# End custom block
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
+import os  # noqa: E402
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -58,7 +60,7 @@ WSGI_APPLICATION = 'example_project.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    'default':{
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }

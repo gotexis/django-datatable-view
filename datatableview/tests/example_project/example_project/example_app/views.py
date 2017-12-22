@@ -37,7 +37,7 @@ class IndexView(TemplateView):
         db_works = True
         try:
             list(Entry.objects.all()[:1])
-        except:
+        except:  # noqa: E722
             db_works = False
         context['db_works'] = db_works
 
@@ -849,12 +849,12 @@ class BootstrapTemplateDatatableView(DemoMixin, DatatableView):
     are a little lackluster by comparison.  To fix this, reference the latest integration helper CSS
     and javascript support files in the template:
 
-    <pre>
-    &lt;link href="//cdn.datatables.net/plug-ins/be7019ee387/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" /&gt;
-    </pre>
-    <pre>
-    &lt;script src="//cdn.datatables.net/plug-ins/be7019ee387/integration/bootstrap/3/dataTables.bootstrap.js"&gt;&lt;/script&gt;
-    </pre>
+    <pre>&lt;link
+    href="//cdn.datatables.net/plug-ins/be7019ee387/integration/bootstrap/3/dataTables.bootstrap.css"
+    rel="stylesheet" /&gt;</pre>
+    <pre>&lt;script
+    src="//cdn.datatables.net/plug-ins/be7019ee387/integration/bootstrap/3/dataTables.bootstrap.js"
+    &gt;&lt;/script&gt;</pre>
 
     See <a href="https://datatables.net/examples/styling/bootstrap.html">the official datatables
     documentation</a> on the subject for more information.

@@ -92,6 +92,7 @@ FieldDefinitionTuple = namedtuple('FieldDefinitionTuple', ['pretty_name', 'field
 ColumnOrderingTuple = namedtuple('ColumnOrderingTuple', ['order', 'column_index', 'direction'])
 ColumnInfoTuple = namedtuple('ColumnInfoTuple', ['pretty_name', 'attrs'])
 
+
 def resolve_orm_path(model, orm_path):
     """
     Follows the queryset-style query path of ``orm_path`` starting from ``model`` class.  If the
@@ -120,11 +121,11 @@ def get_model_at_related_field(model, attr):
 
     if hasattr(field, 'related_model'):
         return field.related_model
-    elif hasattr(field, 'remote_field') and field.remote_field.field: # Forward/m2m relationship
+    elif hasattr(field, 'remote_field') and field.remote_field.field:  # Forward/m2m relationship
         return field.remote_field.field
 
-    raise ValueError("{0}.{1} ({2}) is not a relationship field.".format(model.__name__, attr,
-            field.__class__.__name__))
+    raise ValueError(
+        "{0}.{1} ({2}) is not a relationship field.".format(model.__name__, attr, field.__class__.__name__))
 
 
 def get_first_orm_bit(field_definition):
