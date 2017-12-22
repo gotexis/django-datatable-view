@@ -14,7 +14,7 @@ from datatableview.views import DatatableView, XEditableDatatableView
 from datatableview.utils import get_datatable_structure
 from datatableview import helpers
 
-from datatableview.tests.example_project.example_project.example_app.models import Entry, Blog
+from .models import Entry, Blog
 
 
 class ResetView(View):
