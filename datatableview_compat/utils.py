@@ -23,7 +23,7 @@ DEFAULT_OPTIONS = {
     'search_fields': [],  # extra ORM paths to search; not displayed
     'unsortable_columns': [],  # table headers not allowed to be sorted
     'hidden_columns': [],  # table headers to be generated, but hidden by the client
-    'structure_template': "datatableview/default_structure.html",
+    'structure_template': "datatableview_compat/default_structure.html",
     'result_counter_id': 'id_count',  # HTML element ID to display the total results
 }
 
