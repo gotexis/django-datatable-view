@@ -34,7 +34,7 @@ setup(
         'Topic :: Software Development',
     ],
     packages=find_packages(exclude=['tests', 'tests.*']),
-    package_data={'datatableview': ['static/js/*.js', 'templates/datatableview/*.html']},
+    package_data={'datatableview_compat': ['static/js/*.js', 'templates/datatableview_compat/*.html']},
     include_package_data=True,
     setup_requires=['pypandoc==1.4'],
     install_requires=['django>=2.0', 'python-dateutil>=2.1'],

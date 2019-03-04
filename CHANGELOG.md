@@ -59,7 +59,7 @@ FIELD_TYPES = {
 If a field type used in a table but isn't found in any of these categories, the old familiar exception will be raised stating that it is an unhandled field type.  The correct solution is to import this registry and append the field class:
 
 ```python
-from datatableview.utils import FIELD_TYPES
+from datatableview_compat.utils import FIELD_TYPES
 from netfields.fields import InetAddressField
 FIELD_TYPES['text'].append(InetAddressField)
 ```
@@ -162,7 +162,7 @@ Note that all of the configuration options specified on the view are represented
 
 To make your life slightly easier, we've included a new template fragment at ``datatableview/bootstrap_structure.html``.  This inclusion template simply adds the Bootstrap-esque ``table striped-table bordered-table`` classes to the main ``<table>`` tag.
 
-To use this template, you can either specify on your view's options ``datatable_options["structure_template"] = "datatableview/bootstrap_structure.html"``, or you can copy the contents of this file into your own overridden ``"datatableview/default_structure.html"`` as a starting point for customization.
+To use this template, you can either specify on your view's options ``datatable_options["structure_template"] = "datatableview_compat/bootstrap_structure.html"``, or you can copy the contents of this file into your own overridden ``"datatableview/default_structure.html"`` as a starting point for customization.
 
 #### Tests
 
